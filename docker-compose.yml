@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  paddleocr:
+    build:
+      context: ./PaddleOCR  # Đường dẫn đến thư mục PaddleOCR đã clone
+    container_name: paddleocr
+    ports:
+      - "8081:8081"
+
+  springboot-app:
+    build:
+      context: ./qrweb  # Đường dẫn đến thư mục dự án Java Spring Boot
+    container_name: springboot-app
+    ports:
+      - "8082:8082"
+    depends_on:
+      - paddleocr
+    environment:
+      - OCR_SERVER_URL=http://paddleocr:8081
